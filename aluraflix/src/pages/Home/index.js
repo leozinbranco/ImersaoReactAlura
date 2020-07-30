@@ -1,9 +1,11 @@
-import React from 'react';
+import React  from 'react';
 
 import Carousel from '../../components/Carousel';
 import BannerMain from '../../components/BannerMain';
 import PageDefault from '../../components/PageDefault';
 import dadosIniciais from '../../data/dados_iniciais.json';
+
+
 
 function Home() {
   return (

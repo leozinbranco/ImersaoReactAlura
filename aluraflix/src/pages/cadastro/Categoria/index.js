@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
 import { Link } from 'react-router-dom';
-
+import Button from '../../../components/Button';
 
 export default function CadastroCategoria() {
 
@@ -74,9 +74,9 @@ export default function CadastroCategoria() {
                     label="Cor"
                 />
 
-                <button>
+                <Button>
                     Cadastrar
-                </button>
+                </Button>
             </form>
 
             <ul>

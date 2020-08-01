@@ -15,15 +15,15 @@
     "styled-components": "^5.1.1"
   },
   "scripts": {
-    "server": "node ./server.js",
+    "server": "json-server --watch db.json --port 8080",
     "dev": "concurrently \"react-scripts start\" \"npm run server\"",
-    "start": "npm run server",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app" 
+    "extends": "react-app"
   },
   "browserslist": {
     "production": [

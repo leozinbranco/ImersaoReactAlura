@@ -1,91 +1,75 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault';
 import FormField from '../../../components/FormField';
-import { Link } from 'react-router-dom';
 import Button from '../../../components/Button';
+import useForm from '../../../hooks/useForm';
 
 export default function CadastroCategoria() {
-
     const valoresIniciais = {
-        nome: '',
-        descricao: '',
+        titulo: '',
         cor: '',
-    }
-    const [listaCategorias, setListaCategorias] = useState([]); //precisa do []
+        descricao: '',
+    };
 
-    const [values, setValues] = useState(valoresIniciais); //valor inicial
+    const { clearForm, handleChange, values } = useForm(valoresIniciais);
 
-    function setValue(key, value) {
-        setValues({
-            //key: nome, descricao, cor, etc
-            ...values,
-            [key]: value, //nome: 'valor'
-            //[key] -> fica uma forma dinâmica
-        });
+    const [listaCategorias, setListaCategorias] = useState([]); // precisa do []
 
+    /*
+    useEffect, adiciona a funcionalidade de executar efeitos colaterais através de um componente funcional. */
 
-    }
-
-    function handleChange(event) { //handler = capturar
-        //const { getAttribute, value } = event.target; //aqui estou pegando apenas o VALUE(event.target.value) e o getAttribute(event.target.getAttribute) do objeto
-        //console.log(event.target.getAttribute('name'));
-        setValue(
-            event.target.getAttribute('name'),//getAttribute('nome'), (pegar o props "nome", e pegando o valor dele )
-            event.target.value//value 
-        );
-    }
-
-
-    //sem o array, ele chama o useEffect a todo momento, a cada atualização nao importa o que seja
+    // sem o array, ele chama o useEffect a todo momento, a cada atualização nao importa o que seja
     useEffect(() => {
-        console.log("alo alo alo");
+        console.log('alo alo alo');
         const url = 'http://localhost:8080/categorias';
-        fetch(url) //fecth = função nativa do browser, que é usada para buscar coisas. essa fetch ela retorna uma promise. (then... etc)
-        .then(async (respostaDoservidor) => {
-            
-            const resposta = await respostaDoservidor.json();
-            setListaCategorias([
-                ...resposta, //para guardar todos os objetos json. 
-            ]);
-        })
-        
+        fetch(url) // fecth = função nativa do browser, que é usada para buscar coisas. essa fetch ela retorna uma promise. (then... etc)
+            .then(async (respostaDoservidor) => {
+                const resposta = await respostaDoservidor.json();
+                setListaCategorias([
+                    ...resposta, // para guardar todos os objetos json.
+                ]);
+            });
 
-
-        /*setTimeout(() => {
-            setListaCategorias([
-                ...listaCategorias,
-                {
-                    id: 1,
-                    nome: 'Front End',
-                    descricao: 'Uma categoria foda',
-                    cor: '#6BD1FF',
-                },
-                {
-                    id: 2,
-                    nome: 'Back End',
-                    descricao: 'Outra categoria foda',
-                    cor: '#6BD1FF',
-                },
-            ]);
-        }, 4 * 1000);*/
+        /* setTimeout(() => {
+                setListaCategorias([
+                    ...listaCategorias,
+                    {
+                        id: 1,
+                        nome: 'Front End',
+                        descricao: 'Uma categoria foda',
+                        cor: '#6BD1FF',
+                    },
+                    {
+                        id: 2,
+                        nome: 'Back End',
+                        descricao: 'Outra categoria foda',
+                        cor: '#6BD1FF',
+                    },
+                ]);
+            }, 4 * 1000); */
     }, []);
 
     return (
         <PageDefault>
-            <h1>Cadastro de Categoria: {values.nome}</h1>
+            <h1>
+                Cadastro de Categoria:
+        {values.nome}
+            </h1>
 
             <form
-                //style={{ background: values.cor }}
+                // style={{ background: values.cor }}
                 onSubmit={function handleSubmit(event) {
-                    event.preventDefault(); //previne o reloading padrao da pagina 
+                    event.preventDefault(); // previne o reloading padrao da pagina
 
                     setListaCategorias([
                         ...listaCategorias,
-                        values
+                        values,
                     ]);
 
-                    setValues(valoresIniciais);
-                }}>
+                    clearForm(valoresIniciais);
+                }}
+            >
                 <FormField
                     value={values.nome}
                     onChange={handleChange}
@@ -111,26 +95,22 @@ export default function CadastroCategoria() {
 
                 <Button>
                     Cadastrar
-                </Button>
+        </Button>
             </form>
 
             <ul>
 
                 {listaCategorias.map((listaCategorias) => (
-                    <li key={`${listaCategorias.id}`}>
-                        {listaCategorias.nome}
+                    //console.log(listaCategorias.titulo),
+                    <li key={`${listaCategorias.titulo}`}>
+                        {listaCategorias.titulo}
                     </li>
-                )
-
-
-                )}
+                ))}
             </ul>
-
 
             <Link to="/">
                 Ir para home
-            </Link>
+      </Link>
         </PageDefault>
     );
 }
-

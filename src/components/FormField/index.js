@@ -67,7 +67,7 @@ const Input = styled.input`
         
 `;
 
-export default function FormField({ type, name, value, onChange, label }) {
+export default function FormField({ type, name, value, onChange, label, suggestions }) {
 
     const fieldID = `id_${name} `;
     const isTypeTextArea = type === 'textarea';
@@ -75,8 +75,10 @@ export default function FormField({ type, name, value, onChange, label }) {
     // if(type === textara) {tag = textarea} else {tag = input}
     //as = qual vai ser o tipo dele? input?
 
-    const hasValue = Boolean(value.length);
-    
+    const hasValue = Boolean(value);
+    const hasSuggestions = Boolean(suggestions); //ver se tem, se tiver, usar.
+   
+
     return (
 
         <FormFieldWrapper>
@@ -91,11 +93,30 @@ export default function FormField({ type, name, value, onChange, label }) {
                     name={name}
                     onChange={onChange}
                     hasValue={hasValue}
-                    />
-                    <Label.Text>
-                        {label}
+                    autoComplete={hasSuggestions ? 'off' : 'on'}
+                    list={hasSuggestions ? `suggestionFor_${fieldID}` : undefined}
+                />
+                <Label.Text>
+                    {label}
                         :
                     </Label.Text>
+                {
+                    hasSuggestions && (
+                        <datalist id={`suggestionFor_${fieldID}`}>
+                            {
+                                suggestions.map((suggestion) => (//retorna um array 
+                                    <option value={suggestion} key={`suggestionFor_${fieldID}_option${suggestion}`}>
+                                        {suggestion}
+                                    
+                                    </option>
+
+                                ))
+                            }
+                        </datalist>
+                    )
+                }
+
+
             </Label>
         </FormFieldWrapper>
 
@@ -108,13 +129,14 @@ FormField.defaultTypes = {
     type: 'text',  //fica esperando um texto do Type. 
     value: '',
     onChange: () => { },//<-- isso significa function, que é o valor padrão(func)
-    as: 'input'
+    suggestions: [] //vazio pois nao é obrigatorio 
 };
 FormField.propTypes = {
     type: PropTypes.string,
     name: PropTypes.string.isRequired,
     value: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
+    onChange: PropTypes.func,
+    suggestions: PropTypes.arrayOf(PropTypes.string),
     label: PropTypes.string.isRequired,
     //as: PropTypes.string.isRequired,
 };

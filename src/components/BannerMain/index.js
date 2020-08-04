@@ -16,6 +16,7 @@ export default function BannerMain({
   url,
 }) {
   const youTubeID = getYouTubeId(url);
+  console.log(youTubeID)
   const bgUrl = `https://img.youtube.com/vi/${youTubeID}/maxresdefault.jpg`;
 
   return (
